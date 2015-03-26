@@ -1,0 +1,33 @@
+{
+  "name": "get-version",
+  "version": "0.0.1",
+  "description": "Get versions list for npm, node and iojs",
+  "main": "index.js",
+  "scripts": {
+    "pretest": "npm run lint",
+    "test": "LOG_LEVEL=0 mocha spec/**/*_spec.js",
+    "lint": "jshint ./"
+  },
+  "keywords": [
+    "npm",
+    "node",
+    "version",
+    "iojs"
+  ],
+  "author": "Alex Padgett",
+  "license": "MIT",
+  "dependencies": {
+    "minimist": "1.1.1",
+    "q": "1.2.0",
+    "request": "2.54.0",
+    "semver": "4.3.1",
+    "winston": "0.9.0"
+  },
+  "devDependencies": {
+    "chai": "2.1.2",
+    "jshint": "2.6.3",
+    "mocha": "2.2.1",
+    "proxyquire": "1.4.0",
+    "sinon": "1.14.1"
+  }
+}
