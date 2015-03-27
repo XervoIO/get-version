@@ -32,8 +32,7 @@ describe('engines/iojs', function () {
 
     describe('when a valid version is specified', function () {
       it('returns the specified version', function (done) {
-        var opts = { engines: { 'iojs': '1.6.0' }};
-        engine.resolveVersion(opts)
+        engine.resolveVersion({ engines: { 'iojs': '1.6.0' }})
           .then(function(version) {
             expect(version).to.equal('1.6.0');
             done();
@@ -43,8 +42,7 @@ describe('engines/iojs', function () {
 
     describe('when an asterisk is provided', function () {
       it('returns the latest version', function (done) {
-        var opts = { engines: { 'iojs': '*' }};
-        engine.resolveVersion(opts)
+        engine.resolveVersion({ engines: { 'iojs': '*' }})
           .then(function(version) {
             expect(version).to.equal('1.6.2');
             done();
@@ -54,8 +52,7 @@ describe('engines/iojs', function () {
 
     describe('when a tilde range is provided', function () {
       it('resolves the appropriate semantic version', function (done) {
-        var opts = { engines: { 'iojs': '~1.0' }};
-        engine.resolveVersion(opts)
+        engine.resolveVersion({ engines: { 'iojs': '~1.0' }})
           .then(function(version) {
             expect(version).to.equal('1.0.4');
             done();
@@ -65,8 +62,7 @@ describe('engines/iojs', function () {
 
     describe('when an caret range is provided', function () {
       it('resolves the appropriate semantic version', function (done) {
-        var opts = { engines: { 'iojs': '^1.0.0' }};
-        engine.resolveVersion(opts)
+        engine.resolveVersion({ engines: { 'iojs': '^1.0.0' }})
           .then(function(version) {
             expect(version).to.equal('1.6.2');
             done();
@@ -76,12 +72,31 @@ describe('engines/iojs', function () {
 
     describe('when an x-version is provided', function () {
       it('resolves the appropriate semantic version', function (done) {
-        var opts = { engines: { 'iojs': '1.x' }};
-        engine.resolveVersion(opts)
+        engine.resolveVersion({ engines: { 'iojs': '1.x' }})
           .then(function(version) {
             expect(version).to.equal('1.6.2');
             done();
           });
+      });
+    });
+
+    describe('when an invalid version is provided', function () {
+      it('returns the latest version', function (done) {
+        engine.resolveVersion({ engines: { 'iojs': '5.0' }})
+          .then(function(version) {
+            expect(version).to.equal('1.6.2');
+            done();
+          });
+      });
+
+      describe('when allowBlank option is true', function () {
+        it('returns null', function (done) {
+          engine.resolveVersion({ engines: { 'iojs': '5.0' }, allowBlank: true})
+            .then(function(version) {
+              expect(version).to.be.null;
+              done();
+            });
+        });
       });
     });
   });
