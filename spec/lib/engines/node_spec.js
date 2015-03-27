@@ -44,8 +44,7 @@ describe('engines/node', function () {
 
     describe('when a valid node version is specified', function () {
       it('returns the specified version', function (done) {
-        var opts = { engines: { 'node': '0.0.1' }};
-        engine.resolveVersion(opts)
+        engine.resolveVersion({ engines: { 'node': '0.0.1' }})
           .then(function(version) {
             expect(version).to.equal('0.0.1');
             done();
@@ -55,8 +54,7 @@ describe('engines/node', function () {
 
     describe('when an asterisk is provided', function () {
       it('returns the latest stable node version', function (done) {
-        var opts = { engines: { 'node': '*' }};
-        engine.resolveVersion(opts)
+        engine.resolveVersion({ engines: { 'node': '*' }})
           .then(function(version) {
             expect(version).to.equal('0.12.1');
             done();
@@ -66,8 +64,7 @@ describe('engines/node', function () {
 
     describe('when a tilde range is provided', function () {
       it('resolves the appropriate semantic version', function (done) {
-        var opts = { engines: { 'node': '~0.10' }};
-        engine.resolveVersion(opts)
+        engine.resolveVersion({ engines: { 'node': '~0.10' }})
           .then(function(version) {
             expect(version).to.equal('0.10.38');
             done();
@@ -77,8 +74,7 @@ describe('engines/node', function () {
 
     describe('when an caret range is provided', function () {
       it('resolves the appropriate semantic version', function (done) {
-        var opts = { engines: { 'node': '^0.10' }};
-        engine.resolveVersion(opts)
+        engine.resolveVersion({ engines: { 'node': '^0.10' }})
           .then(function(version) {
             expect(version).to.equal('0.10.38');
             done();
@@ -88,8 +84,7 @@ describe('engines/node', function () {
 
     describe('when an x-version is provided', function () {
       it('resolves the appropriate semantic version', function (done) {
-        var opts = { engines: { 'node': '0.8.x' }};
-        engine.resolveVersion(opts)
+        engine.resolveVersion({ engines: { 'node': '0.8.x' }})
           .then(function(version) {
             expect(version).to.equal('0.8.28');
             done();
@@ -97,6 +92,35 @@ describe('engines/node', function () {
       });
     });
 
+    describe('when an iojs key is present', function () {
+      it('resolves the appropriate iojs version', function (done) {
+        engine.resolveVersion({ engines: { 'iojs': '*', 'node': '0.8.28' }})
+          .then(function(version) {
+            expect(version).to.equal('1.6.2');
+            done();
+          });
+      });
+    });
+
+    describe('when an iojs version is provided', function () {
+      it('falls back to iojs versions', function (done) {
+        engine.resolveVersion({ engines: { 'node': '1.0.2' }})
+          .then(function(version) {
+            expect(version).to.equal('1.0.2');
+            done();
+          });
+      });
+    });
+
+    describe('when neither an iojs nor node version can be found', function () {
+      it('returns the latest stable node version', function (done) {
+        engine.resolveVersion({ engines: { 'node': '5.0' }})
+          .then(function(version) {
+            expect(version).to.equal('0.12.1');
+            done();
+          });
+      });
+    });
   });
 
 });
