@@ -26,6 +26,12 @@ describe('package', function () {
       pkg.read(pkgPath);
       expect(pkg.normalize.callCount).to.equal(1);
     });
+
+    describe('when a package is not found', function () {
+      it('returns false', function () {
+        expect(pkg.read(null)).to.be.false;
+      });
+    });
   });
 
   describe('#normalize', function () {
