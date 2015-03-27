@@ -62,6 +62,16 @@ describe('engines/node', function () {
       });
     });
 
+    describe('when latest is provided', function () {
+      it('returns the latest stable node version', function (done) {
+        engine.resolveVersion({ engines: { 'node': 'latest' }})
+          .then(function(version) {
+            expect(version).to.equal('0.12.1');
+            done();
+          });
+      });
+    });
+
     describe('when a tilde range is provided', function () {
       it('resolves the appropriate semantic version', function (done) {
         engine.resolveVersion({ engines: { 'node': '~0.10' }})
