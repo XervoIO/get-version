@@ -22,7 +22,8 @@ var versionServiceMock = {
       latest: '0.12.1'
     });
     return q.promise;
-  }
+  },
+  '@global': true
 };
 
 var engine = proxyquire('../../../lib/engines/node', {
