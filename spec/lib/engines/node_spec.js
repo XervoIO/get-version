@@ -1,4 +1,5 @@
 var expect     = require('chai').expect;
+var sinon      = require('sinon');
 var proxyquire = require('proxyquire');
 var Q          = require('q');
 
@@ -33,6 +34,27 @@ var engine = proxyquire('../../../lib/engines/node', {
 describe('engines/node', function () {
 
   describe('#resolveVersion', function () {
+    describe('when fetching versions fails', function () {
+      beforeEach(function () {
+        sinon.stub(versionServiceMock, 'getNodeVersions', function () {
+          var q = Q.defer();
+          q.reject(new Error('fail'));
+          return q.promise;
+        });
+      });
+
+      afterEach(function () {
+        versionServiceMock.getNodeVersions.restore();
+      });
+
+      it('rejects the promise', function (done) {
+        engine.resolveVersion({ engines: {} }).fail(function (err) {
+          expect(err).to.be.an.instanceOf(Error);
+          done();
+        });
+      });
+    });
+
     describe('when no version is specified', function () {
       it('returns the latest stable node version', function (done) {
         engine.resolveVersion({ engines: {}})

@@ -16,13 +16,13 @@ var nodeVersions = ['0.0.1','0.0.2','0.0.3','0.0.4','0.0.5','0.0.6','0.1.0','0.1
 
 describe('versions', function () {
 
+  afterEach(function () {
+    requestMock.reset();
+  });
+
   describe('#getNodeVersions', function () {
     beforeEach(function () {
       requestMock.yields(null, null, fs.readFileSync(__dirname + '/../fixtures/nodedist.html'));
-    });
-
-    afterEach(function () {
-      requestMock.reset();
     });
 
     it('returns a list of node versions', function (done) {
@@ -38,15 +38,25 @@ describe('versions', function () {
         done();
       });
     });
+
+    describe('when a request fails', function () {
+      beforeEach(function () {
+        requestMock.yields(new Error('request failed'), null, null);
+      });
+
+      it('handles the error', function (done) {
+        versions.getNodeVersions().fail(function (err) {
+          expect(err).to.be.an.instanceOf(Error);
+          done();
+        });
+      });
+
+    });
   });
 
   describe('#getIojsVersions', function () {
     beforeEach(function () {
       requestMock.yields(null, null, fs.readFileSync(__dirname + '/../fixtures/iodist.html'));
-    });
-
-    afterEach(function () {
-      requestMock.reset();
     });
 
     it('returns a list of iojs versions', function (done) {
@@ -61,6 +71,20 @@ describe('versions', function () {
         expect(versions.latest).to.equal('1.6.2');
         done();
       });
+    });
+
+    describe('when a request fails', function () {
+      beforeEach(function () {
+        requestMock.yields(new Error('request failed'), null, null);
+      });
+
+      it('handles the error', function (done) {
+        versions.getIojsVersions().fail(function (err) {
+          expect(err).to.be.an.instanceOf(Error);
+          done();
+        });
+      });
+
     });
   });
 });

@@ -1,4 +1,5 @@
 var expect     = require('chai').expect;
+var sinon      = require('sinon');
 var proxyquire = require('proxyquire');
 var Q          = require('q');
 
@@ -20,6 +21,28 @@ var engine = proxyquire('../../../lib/engines/iojs', {
 describe('engines/iojs', function () {
 
   describe('#resolveVersion', function () {
+
+    describe('when fetching versions fails', function () {
+      beforeEach(function () {
+        sinon.stub(versionServiceMock, 'getIojsVersions', function () {
+          var q = Q.defer();
+          q.reject(new Error('fail'));
+          return q.promise;
+        });
+      });
+
+      afterEach(function () {
+        versionServiceMock.getIojsVersions.restore();
+      });
+
+      it('rejects the promise', function (done) {
+        engine.resolveVersion({ engines: {} }).fail(function (err) {
+          expect(err).to.be.an.instanceOf(Error);
+          done();
+        });
+      });
+    });
+
     describe('when no version is specified', function () {
       it('returns the latest version', function (done) {
         engine.resolveVersion({ engines: {}})
