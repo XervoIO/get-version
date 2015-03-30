@@ -3,6 +3,9 @@
   "version": "0.0.1",
   "description": "Get versions list for npm, node and iojs",
   "main": "index.js",
+  "bin": {
+    "get-version": "./bin/get-version"
+  },
   "scripts": {
     "pretest": "npm run lint",
     "test": "LOG_LEVEL=0 istanbul test _mocha  -R spec -- --recursive --reporter spec",

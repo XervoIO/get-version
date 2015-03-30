@@ -1,0 +1,14 @@
+#!/usr/bin/env node
+var argv       = require('minimist')(process.argv.slice(2));
+var os         = require('os');
+var getVersion = require('../');
+var path       = require('path');
+
+getVersion(argv.engine, path.join(process.cwd(), argv._[0]))
+  .then(function (version) {
+    process.stdout.write(version + os.EOL);
+    process.exit(0);
+  }, function (err) {
+    process.stderr.write(err + os.EOL);
+    process.exit(1);
+  });
