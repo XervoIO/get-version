@@ -17,7 +17,12 @@
     "version",
     "iojs"
   ],
-  "author": "Alex Padgett",
+  "author": "Alex Padgett <alex@modulus.io>",
+  "maintainers": [
+    "Alex Padgett <alex@modulus.io>",
+    "Jack Boberg <jack@modulus.io>",
+    "Matt Hernandez <matt@modulus.io>"
+  ],
   "license": "MIT",
   "dependencies": {
     "lodash": "3.6.0",
