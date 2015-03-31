@@ -13,7 +13,7 @@ There are 3 supported engines: npm, node and iojs.
 ### Command Line
 
 ```
-$ get-version --engine <engine> package.json
+$ get-version --engine <engine> /path/to/package.json
 ```
 
 ### CommonJS
@@ -23,7 +23,7 @@ get-version returns a promise.
 ```js
 var getVersion = require('get-version');
 
-getVersion('npm', './package.json').then(success, failure);
+getVersion('npm', '/path/to/package.json').then(success, failure);
 ```
 
 ### Notes
