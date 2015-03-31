@@ -1,6 +1,6 @@
 {
   "name": "get-version",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Get versions list for npm, node and iojs",
   "main": "index.js",
   "bin": {
