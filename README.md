@@ -8,12 +8,13 @@ Parse package.json files and determine a version for npm, node or iojs.
 
 ## Usage
 
-There are 3 supported engines: npm, node and iojs.
+There are 3 supported engines: **npm**, **node** and **iojs**.
 
 ### Command Line
 
 ```
 $ get-version --engine <engine> /path/to/package.json
+> 0.12.0
 ```
 
 ### CommonJS
@@ -25,6 +26,10 @@ var getVersion = require('get-version');
 
 getVersion('npm', '/path/to/package.json').then(success, failure);
 ```
+
+`success` receives a string of the resolved version.
+
+`failure` receives an instance of Error.
 
 ### Notes
 
