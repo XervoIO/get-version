@@ -35,7 +35,7 @@ Since node uses it's own versioning system, semantic versioning is not used to f
 * If `latest` or `*` are specified, the latest stable version of node will be used.
 * If a valid node version cannot be found, get-version will attempt to find an appropriate version of iojs and use it instead.
 * If neither a node nor iojs version can be found, the latest stable version of node will be used.
-* If the node engine is requested, but an iojs key/value is present in the engines property of the package.json
+* If the node engine is requested but an iojs key/value is present in the engines property of the package.json, iojs will be used without a fallback to node.
 
 ### License
 
