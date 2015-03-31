@@ -1,4 +1,7 @@
-# get-version
+get-version
+===========
+
+[![npm version](https://badge.fury.io/js/get-version.svg)](http://badge.fury.io/js/get-version) [![Code Climate](https://codeclimate.com/github/onmodulus/get-version/badges/gpa.svg)](https://codeclimate.com/github/onmodulus/get-version)
 
 Parse package.json files and determine a version for npm, node or iojs.
 
