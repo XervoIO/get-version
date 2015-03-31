@@ -4,7 +4,7 @@ var os         = require('os');
 var getVersion = require('../');
 var path       = require('path');
 
-getVersion(argv.engine, path.join(process.cwd(), argv._[0]))
+getVersion(argv.engine, path.resolve(process.cwd(), argv._[0]))
   .then(function (version) {
     process.stdout.write(version + os.EOL);
     process.exit(0);
