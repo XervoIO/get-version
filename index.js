@@ -4,8 +4,7 @@ var pkg     = require('./lib/package');
 
 module.exports = function (engStr, pkgFile) {
 
-  assert(pkgFile, 'Must specify package file');
-  var pkgData = pkg.read(pkgFile);
+  var pkgData = pkgFile ? pkg.read(pkgFile) : { engines: {} };
 
   assert(pkgData, 'Invalid package file specified');
   assert(engStr, 'Must specify engine');
