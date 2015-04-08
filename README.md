@@ -36,6 +36,8 @@ getVersion('npm', '/path/to/package.json').then(success, failure);
 
 ### Notes
 
+If no package.json file is specified, get-version will return the latest version for the specified engine.
+
 get-version will use semantic versioning to find versions for both npm and iojs if one is not specified.
 
 Since node uses it's own versioning system, semantic versioning is not used to find node versions. It uses the following rules to evaluate node versions:
