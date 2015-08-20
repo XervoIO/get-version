@@ -1,8 +1,17 @@
-var expect     = require('chai').expect;
-var sinon      = require('sinon');
+var sinon = require('sinon');
 var proxyquire = require('proxyquire');
+var Lab = require('lab');
+var Code = require('code');
 
-var requestMock    = sinon.stub();
+var lab = exports.lab = Lab.script();
+
+var describe = lab.describe;
+var it = lab.it;
+var expect = Code.expect;
+var beforeEach = lab.beforeEach;
+var afterEach = lab.afterEach;
+
+var requestMock = sinon.stub();
 var versionFixture = require('../../fixtures/npm.json');
 
 var engine = proxyquire('../../../lib/engines/npm', {
@@ -10,17 +19,19 @@ var engine = proxyquire('../../../lib/engines/npm', {
 });
 
 describe('engines/npm', function () {
-  beforeEach(function () {
+  beforeEach(function (done) {
     requestMock.yields(null, null, JSON.stringify(versionFixture));
+    done();
   });
 
-  afterEach(function () {
+  afterEach(function (done) {
     requestMock.reset();
+    done();
   });
 
   describe('#resolveVersion', function () {
     describe('when fetching versions fails', function () {
-      beforeEach(function () {
+      beforeEach(function (done) {
         sinon.stub(engine, 'fetchVersions', function () {
           return {
             then: function (success, fail) {
@@ -28,10 +39,13 @@ describe('engines/npm', function () {
             }
           };
         });
+
+        done();
       });
 
-      afterEach(function () {
+      afterEach(function (done) {
         engine.fetchVersions.restore();
+        done();
       });
 
       it('rejects the promise', function (done) {
@@ -66,8 +80,9 @@ describe('engines/npm', function () {
 
   describe('#fetchVersions', function () {
     describe('when a request fails', function () {
-      beforeEach(function () {
+      beforeEach(function (done) {
         requestMock.yields(new Error('request failed'), null, null);
+        done();
       });
 
       it('rejects the promise', function (done) {
@@ -80,7 +95,7 @@ describe('engines/npm', function () {
 
     it('retrieves a list of all versions of npm', function (done) {
       engine.fetchVersions().then(function (versions) {
-        expect(versions.all).to.have.members(Object.keys(versionFixture.versions));
+        expect(versions.all).to.include(Object.keys(versionFixture.versions));
         done();
       });
     });

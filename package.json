@@ -7,9 +7,8 @@
     "get-version": "./bin/get-version"
   },
   "scripts": {
-    "pretest": "npm run lint",
-    "test": "LOG_LEVEL=0 istanbul cover _mocha  -R spec -- --recursive --reporter spec",
-    "lint": "jshint ./"
+    "test": "lab --lint",
+    "gen-coverage": "lab --coverage --reporter lcov --output coverage/lcov.info"
   },
   "keywords": [
     "npm",
@@ -37,10 +36,8 @@
     "winston": "0.9.0"
   },
   "devDependencies": {
-    "chai": "2.1.2",
-    "istanbul": "0.3.11",
-    "jshint": "2.6.3",
-    "mocha": "2.2.1",
+    "code": "1.x.x",
+    "lab": "5.x.x",
     "proxyquire": "1.4.0",
     "sinon": "1.14.1"
   }
