@@ -1,7 +1,17 @@
-var expect     = require('chai').expect;
-var sinon      = require('sinon');
+var sinon = require('sinon');
 var proxyquire = require('proxyquire');
-var Q          = require('q');
+var Q = require('q');
+
+var Lab = require('lab');
+var Code = require('code');
+
+var lab = exports.lab = Lab.script();
+
+var describe = lab.describe;
+var it = lab.it;
+var expect = Code.expect;
+var beforeEach = lab.beforeEach;
+var afterEach = lab.afterEach;
 
 var versionServiceMock = {
   getIojsVersions: function () {
@@ -23,16 +33,19 @@ describe('engines/iojs', function () {
   describe('#resolveVersion', function () {
 
     describe('when fetching versions fails', function () {
-      beforeEach(function () {
+      beforeEach(function (done) {
         sinon.stub(versionServiceMock, 'getIojsVersions', function () {
           var q = Q.defer();
           q.reject(new Error('fail'));
           return q.promise;
         });
+
+        done();
       });
 
-      afterEach(function () {
+      afterEach(function (done) {
         versionServiceMock.getIojsVersions.restore();
+        done();
       });
 
       it('rejects the promise', function (done) {
