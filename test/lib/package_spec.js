@@ -1,11 +1,10 @@
-var fs = require('fs');
-var path = require('path');
+const Path = require('path');
 
-var sinon = require('sinon');
-var Lab = require('lab');
-var Code = require('code');
+const Sinon = require('sinon');
+const Lab = require('lab');
+const Code = require('code');
 
-var pkg = require('../../lib/package');
+const Pkg = require('../../lib/package');
 
 var lab = exports.lab = Lab.script();
 
@@ -15,49 +14,45 @@ var expect = Code.expect;
 var beforeEach = lab.beforeEach;
 var afterEach = lab.afterEach;
 
+var pkgPath = Path.join(__dirname, '../fixtures/package.json');
+const PkgFixture = require(pkgPath);
+
 describe('package', function () {
-
-  var pkgPath = path.join(__dirname, '../fixtures/package.json');
-  var pkgFixture = require(pkgPath);
-
   describe('#read', function () {
     beforeEach(function (done) {
-      sinon.stub(pkg, 'normalize').returnsArg(0);
+      Sinon.stub(Pkg, 'normalize').returnsArg(0);
       done();
     });
 
     afterEach(function (done) {
-      pkg.normalize.restore();
+      Pkg.normalize.restore();
       done();
     });
 
     it('reads a package.json', function (done) {
-      expect(pkg.read(pkgPath)).to.equal(pkgFixture);
+      expect(Pkg.read(pkgPath)).to.equal(PkgFixture);
       done();
     });
 
     it('normalizes the output', function (done) {
-      pkg.read(pkgPath);
-      expect(pkg.normalize.callCount).to.equal(1);
+      Pkg.read(pkgPath);
+      expect(Pkg.normalize.callCount).to.equal(1);
       done();
     });
 
     describe('when a package is not found', function () {
       it('returns false', function (done) {
-        expect(pkg.read(null)).to.be.false;
+        expect(Pkg.read(null)).to.be.false();
         done();
       });
     });
   });
 
   describe('#normalize', function () {
-
     it('adds the engines key if one does not exist', function (done) {
-      expect(pkg.normalize({})).to.be.an.object();
-      expect(pkg.normalize({})).to.include('engines');
+      expect(Pkg.normalize({})).to.be.an.object();
+      expect(Pkg.normalize({})).to.include('engines');
       done();
     });
-
   });
-
 });
