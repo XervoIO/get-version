@@ -36,6 +36,7 @@
     "winston": "0.9.0"
   },
   "devDependencies": {
+    "@modulus/standard": "*",
     "code": "1.x.x",
     "lab": "5.x.x",
     "proxyquire": "1.4.0",
