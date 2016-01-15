@@ -1,14 +1,15 @@
-var engines = require('./lib/engines');
-var assert  = require('assert');
-var pkg     = require('./lib/package');
+const Engines = require('./lib/engines');
+const Assert = require('assert');
+const Pkg = require('./lib/package');
+
+const NOT_FOUND = -1;
 
 module.exports = function (engStr, pkgFile) {
+  var pkgData = pkgFile ? Pkg.read(pkgFile) : { engines: {} };
 
-  var pkgData = pkgFile ? pkg.read(pkgFile) : { engines: {} };
+  Assert(pkgData, 'Invalid package file specified');
+  Assert(engStr, 'Must specify engine');
+  Assert(Object.keys(Engines).indexOf(engStr) !== NOT_FOUND, 'Invalid engine');
 
-  assert(pkgData, 'Invalid package file specified');
-  assert(engStr, 'Must specify engine');
-  assert(Object.keys(engines).indexOf(engStr) !== -1, 'Invalid engine');
-
-  return engines[engStr].resolveVersion({ engines: pkgData.engines });
+  return Engines[engStr].resolveVersion({ engines: pkgData.engines });
 };

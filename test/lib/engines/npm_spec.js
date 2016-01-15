@@ -1,7 +1,7 @@
-var sinon = require('sinon');
-var proxyquire = require('proxyquire');
-var Lab = require('lab');
-var Code = require('code');
+const Sinon = require('sinon');
+const Proxyquire = require('proxyquire');
+const Lab = require('lab');
+const Code = require('code');
 
 var lab = exports.lab = Lab.script();
 
@@ -11,16 +11,16 @@ var expect = Code.expect;
 var beforeEach = lab.beforeEach;
 var afterEach = lab.afterEach;
 
-var requestMock = sinon.stub();
-var versionFixture = require('../../fixtures/npm.json');
+var requestMock = Sinon.stub();
+const VersionFixture = require('../../fixtures/npm.json');
 
-var engine = proxyquire('../../../lib/engines/npm', {
+const Engine = Proxyquire('../../../lib/engines/npm', {
   'request': requestMock
 });
 
 describe('engines/npm', function () {
   beforeEach(function (done) {
-    requestMock.yields(null, null, JSON.stringify(versionFixture));
+    requestMock.yields(null, null, JSON.stringify(VersionFixture));
     done();
   });
 
@@ -32,7 +32,7 @@ describe('engines/npm', function () {
   describe('#resolveVersion', function () {
     describe('when fetching versions fails', function () {
       beforeEach(function (done) {
-        sinon.stub(engine, 'fetchVersions', function () {
+        Sinon.stub(Engine, 'fetchVersions', function () {
           return {
             then: function (success, fail) {
               fail(new Error('fail'));
@@ -44,12 +44,12 @@ describe('engines/npm', function () {
       });
 
       afterEach(function (done) {
-        engine.fetchVersions.restore();
+        Engine.fetchVersions.restore();
         done();
       });
 
       it('rejects the promise', function (done) {
-        engine.resolveVersion({ engines: {} }).fail(function (err) {
+        Engine.resolveVersion({ engines: {} }).fail(function (err) {
           expect(err).to.be.an.instanceOf(Error);
           done();
         });
@@ -58,8 +58,8 @@ describe('engines/npm', function () {
 
     describe('when no version is specified', function () {
       it('returns the latest version of npm', function (done) {
-        engine.resolveVersion({ engines: {}})
-          .then(function(version) {
+        Engine.resolveVersion({ engines: {} })
+          .then(function (version) {
             expect(version).to.equal('2.7.3');
             done();
           });
@@ -68,9 +68,9 @@ describe('engines/npm', function () {
 
     describe('when a valid version is specified', function () {
       it('returns the specified version', function (done) {
-        var opts = { engines: { 'npm': '1.1.25' }};
-        engine.resolveVersion(opts)
-          .then(function(version) {
+        var opts = { engines: { 'npm': '1.1.25' } };
+        Engine.resolveVersion(opts)
+          .then(function (version) {
             expect(version).to.equal('1.1.25');
             done();
           });
@@ -86,7 +86,7 @@ describe('engines/npm', function () {
       });
 
       it('rejects the promise', function (done) {
-        engine.fetchVersions().fail(function (err) {
+        Engine.fetchVersions().fail(function (err) {
           expect(err).to.be.an.instanceOf(Error);
           done();
         });
@@ -94,18 +94,17 @@ describe('engines/npm', function () {
     });
 
     it('retrieves a list of all versions of npm', function (done) {
-      engine.fetchVersions().then(function (versions) {
-        expect(versions.all).to.include(Object.keys(versionFixture.versions));
+      Engine.fetchVersions().then(function (versions) {
+        expect(versions.all).to.include(Object.keys(VersionFixture.versions));
         done();
       });
     });
 
     it('retrieves the latest version of npm', function (done) {
-      engine.fetchVersions().then(function (versions) {
+      Engine.fetchVersions().then(function (versions) {
         expect(versions.latest).to.equal('2.7.3');
         done();
       });
     });
   });
-
 });

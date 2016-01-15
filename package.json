@@ -7,8 +7,10 @@
     "get-version": "./bin/get-version"
   },
   "scripts": {
-    "test": "lab --lint",
-    "gen-coverage": "lab --coverage --reporter lcov --output coverage/lcov.info"
+    "lint": "mod-standard",
+    "test": "lab -c",
+    "posttest": "npm run lint",
+    "coverage": "lab -r html -o coverage/index.html -r lcov -o coverage/lcov.info"
   },
   "keywords": [
     "npm",
@@ -36,6 +38,7 @@
     "winston": "0.9.0"
   },
   "devDependencies": {
+    "@modulus/standard": "*",
     "code": "1.x.x",
     "lab": "5.x.x",
     "proxyquire": "1.4.0",
