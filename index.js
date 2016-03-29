@@ -1,5 +1,8 @@
-const Engines = require('./lib/engines');
 const Assert = require('assert');
+
+const RequireDir = require('require-dir');
+
+const Engines = RequireDir('./lib/engines');
 const Pkg = require('./lib/package');
 
 const NOT_FOUND = -1;
